@@ -17,3 +17,12 @@ CREATE TABLE PARKING_LOT_COMPANY_SPACES (
     FOREIGN KEY (parking_lot_id) REFERENCES PARKING_LOT (id),
     FOREIGN KEY (company_id) REFERENCES COMPANY (id)
 );
+
+CREATE TABLE PARKING_LOT_COMPANY_NUMBER_PLATES (
+    parking_lot_id INT NOT      NULL,
+    company_id     INT          NOT NULL,
+    number_plate   VARCHAR (10) NOT NULL,
+    PRIMARY KEY (parking_lot_id, company_id, number_plate),
+    FOREIGN KEY (parking_lot_id) REFERENCES PARKING_LOT (id),
+    FOREIGN KEY (company_id) REFERENCES COMPANY (id)
+);

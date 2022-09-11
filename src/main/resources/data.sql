@@ -9,3 +9,7 @@ VALUES ('Company X'),
 INSERT INTO PARKING_LOT_COMPANY_SPACES (parking_lot_id, company_id, spaces)
 VALUES ((SELECT id FROM PARKING_LOT WHERE name = 'Lot A'), (SELECT id FROM COMPANY WHERE name = 'Company X'), 30),
        ((SELECT id FROM PARKING_LOT WHERE name = 'Lot A'), (SELECT id FROM COMPANY WHERE name = 'Company Y'), 40);
+
+INSERT INTO PARKING_LOT_COMPANY_NUMBER_PLATES (parking_lot_id, company_id, number_plate)
+VALUES ((SELECT id FROM PARKING_LOT WHERE name = 'Lot A'), (SELECT id FROM COMPANY WHERE name = 'Company X'), 'AAA-111'),
+       ((SELECT id FROM PARKING_LOT WHERE name = 'Lot A'), (SELECT id FROM COMPANY WHERE name = 'Company Y'), 'BBB-222');
