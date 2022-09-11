@@ -1,6 +1,6 @@
 package com.example.parking.controller;
 
-import com.example.parking.service.ParkingLotSpaceBookingService;
+import com.example.parking.service.SpaceBookingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/booking")
 @RequiredArgsConstructor
 @RestController
-public class ParkingLotSpaceBookingController {
+public class SpaceBookingController {
 
-   private final ParkingLotSpaceBookingService bookingService;
+   private final SpaceBookingService bookingService;
 
    @PostMapping
    public void add(@RequestParam("parking-lot-id") int parkingLotId,

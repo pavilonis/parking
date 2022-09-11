@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
-public class ParkingLotSpaceBookingService {
+public class SpaceBookingService {
 
    private final CompanyCrudRepository companyRepository;
    private final ParkingLotCrudRepository parkingLotRepository;
