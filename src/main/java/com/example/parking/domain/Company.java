@@ -11,17 +11,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyJoinColumn;
 import java.util.Map;
 
-@Getter
 @Setter
+@Getter
 @Entity
-public class ParkingLot extends BaseEntity {
+public class Company extends BaseEntity {
 
-   private int size;
-
+   // It would make more sense for ParkingLot to hold map of companies renting spaces in it,
+   // but it requires less code store map of rented parking spaces for company because of monitoring requirements
    @ElementCollection
    @CollectionTable(name = "PARKING_LOT_COMPANY_SPACES", joinColumns = @JoinColumn(name = "parking_lot_id"))
    @MapKeyJoinColumn(name = "company_id")
    @Column(name = "spaces")
-   private Map<Company, Integer> companySpaceReservations;
+   private Map<ParkingLot, Integer> parkingLotSpaces;
 
 }
