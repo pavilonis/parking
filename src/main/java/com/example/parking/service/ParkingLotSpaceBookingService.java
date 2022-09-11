@@ -14,15 +14,15 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
-public class ParkingLotSpaceRentService {
+public class ParkingLotSpaceBookingService {
 
    private final CompanyCrudRepository companyRepository;
    private final ParkingLotCrudRepository parkingLotRepository;
 
    @Transactional
    public void bookSpaces(int parkingLotId, int companyId, int spaces) {
-      ParkingLot parkingLot = getParkingLot(parkingLotId);
-      Company company = getCompany(companyId);
+      ParkingLot parkingLot = parkingLotRepository.getParkingLot(parkingLotId);
+      Company company = companyRepository.getCompany(companyId);
       Map<Company, Integer> existingReservations = parkingLot.getCompanySpaceReservations();
 
       if (existingReservations.containsKey(company)) {
@@ -34,9 +34,10 @@ public class ParkingLotSpaceRentService {
       validateCapacity(parkingLot);
    }
 
+   @Transactional
    public void update(int parkingLotId, int companyId, int spaces) {
-      ParkingLot parkingLot = getParkingLot(parkingLotId);
-      Company company = getCompany(companyId);
+      ParkingLot parkingLot = parkingLotRepository.getParkingLot(parkingLotId);
+      Company company = companyRepository.getCompany(companyId);
       Map<Company, Integer> existingReservations = parkingLot.getCompanySpaceReservations();
 
       if (!existingReservations.containsKey(company)) {
@@ -48,16 +49,17 @@ public class ParkingLotSpaceRentService {
       validateCapacity(parkingLot);
    }
 
+   @Transactional
    public void revoke(int parkingLotId, int companyId, int spacesToRevoke) {
-      ParkingLot parkingLot = getParkingLot(parkingLotId);
-      Company company = getCompany(companyId);
+      ParkingLot parkingLot = parkingLotRepository.getParkingLot(parkingLotId);
+      Company company = companyRepository.getCompany(companyId);
 
       int companyReservations = parkingLot.getCompanySpaceReservations()
             .getOrDefault(company, 0);
 
       if (companyReservations < spacesToRevoke) {
          throw new ResponseStatusException(HttpStatus.CONFLICT, "Can not revoke " + spacesToRevoke +
-               " spaces, company currently rents " + companyReservations + " spaces in parking lot " + parkingLot.getName());
+               " spaces, company currently has " + companyReservations + " spaces in parking lot " + parkingLot.getId());
       }
 
       parkingLot.getCompanySpaceReservations()
@@ -73,15 +75,5 @@ public class ParkingLotSpaceRentService {
          throw new ResponseStatusException(HttpStatus.CONFLICT,
                "Requested " + (reservationsSum - parkingLot.getSize()) + " more spaces than available in parking lot");
       }
-   }
-
-   private ParkingLot getParkingLot(int parkingLotId) {
-      return parkingLotRepository.findById(parkingLotId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Parking lot not found"));
-   }
-
-   private Company getCompany(int companyId) {
-      return companyRepository.findById(companyId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Company lot not found"));
    }
 }
