@@ -13,3 +13,8 @@ VALUES ((SELECT id FROM PARKING_LOT WHERE name = 'Lot A'), (SELECT id FROM COMPA
 INSERT INTO PARKING_LOT_COMPANY_NUMBER_PLATES (parking_lot_id, company_id, number_plate)
 VALUES ((SELECT id FROM PARKING_LOT WHERE name = 'Lot A'), (SELECT id FROM COMPANY WHERE name = 'Company X'), 'AAA-111'),
        ((SELECT id FROM PARKING_LOT WHERE name = 'Lot A'), (SELECT id FROM COMPANY WHERE name = 'Company Y'), 'BBB-222');
+
+INSERT INTO PARKING_EVENT (parking_lot_id, number_plate, event_type)
+VALUES ((SELECT id FROM PARKING_LOT WHERE name = 'Lot A'), 'AAA-111', 'ENTRANCE'),
+       ((SELECT id FROM PARKING_LOT WHERE name = 'Lot A'), 'AAA-111', 'EXIT'),
+       ((SELECT id FROM PARKING_LOT WHERE name = 'Lot B'), 'BBB-222', 'ENTRANCE');
