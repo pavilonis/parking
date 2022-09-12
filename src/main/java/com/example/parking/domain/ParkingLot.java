@@ -1,5 +1,6 @@
 package com.example.parking.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ public class ParkingLot extends BaseEntity {
 
    private int size;
 
+   @JsonIgnore
    @ElementCollection
    @CollectionTable(name = "PARKING_LOT_COMPANY_SPACES", joinColumns = @JoinColumn(name = "parking_lot_id"))
    @MapKeyJoinColumn(name = "company_id")

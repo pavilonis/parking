@@ -30,7 +30,7 @@ CREATE TABLE PARKING_LOT_COMPANY_NUMBER_PLATES (
 CREATE TABLE PARKING_EVENT (
     parking_lot_id INT          NOT NULL,
     number_plate   VARCHAR (10) NOT NULL,
-    event_type     VARCHAR (8)  NOT NULL,
+    event_type     VARCHAR (10)  NOT NULL,
     created        DATETIME     NOT NULL DEFAULT NOW(),
     FOREIGN KEY (parking_lot_id) REFERENCES PARKING_LOT (id)
 );

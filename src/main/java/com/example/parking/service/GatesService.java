@@ -33,4 +33,8 @@ public class GatesService {
    public Map<String, Integer> loadNumberPlatesUsages() {
      return repository.loadNumberPlateUsages();
    }
+
+   public Map<String, Map<String, String>> loadCompanyActiveParkings() {
+      return repository.loadCompanyActiveParkings();
+   }
 }

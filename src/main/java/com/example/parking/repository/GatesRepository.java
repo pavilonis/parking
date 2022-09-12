@@ -48,4 +48,27 @@ public class GatesRepository {
       jdbc.query(sql, params, (rs, i) -> result.put(rs.getString("number_plate"), rs.getInt("number")));
       return result;
    }
+
+   public Map<String, Map<String, String>> loadCompanyActiveParkings() {
+      Map<String, Map<String, String>> result = new HashMap<>();
+      var sql = "SELECT c.name AS company, p.name AS parking, e1.number_plate AS plate \n" +
+            "FROM PARKING_EVENT e1 \n" +
+
+            "  INNER JOIN ( \n" +
+            "     SELECT e2.number_plate AS numbers, MAX(e2.created) AS created \n" +
+            "     FROM PARKING_EVENT e2 \n" +
+            "     GROUP BY e2.number_plate \n" +
+            "  ) lastEvent ON lastEvent.numbers = e1.number_plate AND lastEvent.created = e1.created \n" +
+
+            "  INNER JOIN PARKING_LOT_COMPANY_NUMBER_PLATES com_plate ON com_plate.number_plate = e1.number_plate \n" +
+            "  INNER JOIN COMPANY c ON c.id = com_plate.company_id \n" +
+            "  INNER JOIN PARKING_LOT p ON p.id = com_plate.parking_lot_id \n" +
+
+            "WHERE e1.event_type = :typeEntrance";
+      jdbc.query(sql, Map.of("typeEntrance", ParkingEventType.ENTRANCE), (rs) -> {
+         result.computeIfAbsent(rs.getString("company"), c -> new HashMap<>())
+               .put(rs.getString("parking"), rs.getString("plate"));
+      });
+      return result;
+   }
 }
