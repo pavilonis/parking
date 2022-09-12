@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
+import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,10 +32,10 @@ public class GatesService {
    }
 
    public Map<String, Integer> loadNumberPlatesUsages() {
-     return repository.loadNumberPlateUsages();
+      return repository.loadNumberPlateUsages();
    }
 
-   public Map<String, Map<String, String>> loadCompanyActiveParkings() {
+   public Map<String, Map<String, Set<String>>> loadCompanyActiveParkings() {
       return repository.loadCompanyActiveParkings();
    }
 }

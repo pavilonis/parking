@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -39,7 +40,7 @@ public class MonitoringController {
    }
 
    @GetMapping("/company-active-parkings")
-   public Map<String, Map<String, String>> companyCurrentlyParkedNumberPlates() {
+   public Map<String, Map<String, Set<String>>> companyCurrentlyParkedNumberPlates() {
       return gatesService.loadCompanyActiveParkings();
    }
 

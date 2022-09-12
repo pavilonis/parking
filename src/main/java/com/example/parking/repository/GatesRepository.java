@@ -6,7 +6,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Repository
@@ -49,9 +51,12 @@ public class GatesRepository {
       return result;
    }
 
-   public Map<String, Map<String, String>> loadCompanyActiveParkings() {
-      Map<String, Map<String, String>> result = new HashMap<>();
-      var sql = "SELECT c.name AS company, p.name AS parking, e1.number_plate AS plate \n" +
+   public Map<String, Map<String, Set<String>>> loadCompanyActiveParkings() {
+      Map<String, Map<String, Set<String>>> result = new HashMap<>();
+      var sql = "SELECT " +
+            "  c.name AS company, " +
+            "  p.name AS parking, " +
+            "  e1.number_plate AS plate \n" +
             "FROM PARKING_EVENT e1 \n" +
 
             "  INNER JOIN ( \n" +
@@ -65,9 +70,10 @@ public class GatesRepository {
             "  INNER JOIN PARKING_LOT p ON p.id = com_plate.parking_lot_id \n" +
 
             "WHERE e1.event_type = :typeEntrance";
-      jdbc.query(sql, Map.of("typeEntrance", ParkingEventType.ENTRANCE), (rs) -> {
+      jdbc.query(sql, Map.of("typeEntrance", ParkingEventType.ENTRANCE.name()), (rs) -> {
          result.computeIfAbsent(rs.getString("company"), c -> new HashMap<>())
-               .put(rs.getString("parking"), rs.getString("plate"));
+               .computeIfAbsent(rs.getString("parking"), p -> new HashSet<>())
+               .add(rs.getString("plate"));
       });
       return result;
    }
